@@ -1,0 +1,84 @@
+{% extends 'layout/base.html' %}
+{% comment %} {% load custom_filters %}  {% endcomment %}
+
+{% block title %}
+
+{% endblock title %}
+
+
+{% block content %}
+<section class="grid grid-cols-3 gap-0 lg:grid-cols-4 lg:gap-0 bg-gray-200">
+    <div class='bg-gray-200 flex h-screen flex-col justify-between border-e'>
+        <div class='px-4 py-6'>
+            <ul class='mt-6 space-y-1'>
+                <li>
+                    <a href="{% url 'board:allAdverts' %}" class='block w-5/6 rounded-lg bg-indigo-400 px-3.5 py-2.5 text-center text-md font-normal text-slate-800 shadow-sm hover:bg-indigo-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'>Лента</a>
+                </li>
+                
+                <li>
+                    <a href="{% url 'board:create' %}" class='block w-5/6 rounded-lg bg-indigo-600 px-3.5 py-2.5 text-center text-md font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'>Новый пост</a>
+                </li>
+                {% if request.user.is_authenticated %}
+                {% if is_not_authors %}
+                <li>
+                    <a href="{% url 'board:upgrade' %}" class='block w-5/6 rounded-lg bg-indigo-600 px-3.5 py-2.5 text-center text-md font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'>Стать автором</a>
+                </li>
+                {% endif %}
+                {% endif %}
+            </ul>
+        </div>
+    </div>      
+    <div class='lg:col-span-2 bg-gray-200'>
+{% if posts %}
+    {% for post in posts %}
+        <article class="mt-4 overflow-hidden rounded-lg shadow transition hover:shadow-lg">
+            <div class='flex justify-between bg-white'>
+                <div class=" p-4 sm:p-6">
+                    <h2>{{ post.author.name }}</h2>
+                </div>
+                
+            </div>
+            {% if post.img %}
+            <img
+            alt="Office"
+            src={{ post.img.url|default_if_none:'#' }}
+            class="h-56 w-full object-cover"
+            />
+            {% else %}
+                <p>No foto</p>
+            {% endif %}
+            <div class="bg-white p-4 sm:p-6">
+            <time datetime="2022-10-10" class="block text-xs text-gray-500">
+                {{ post.created_at }}
+            </time>
+        
+            <a href="{% url 'board:AdvertDetail' post.pk %}">
+                <h3 class="mt-0.5 text-lg text-gray-900">
+                    {{ post.title }}
+                </h3>
+            </a>
+            
+            <div class='flex flex-wrap gap-1 mr-5 items-center'>
+                {% for category in post.category.all %}
+                <span class='text-xs bg-purple-100 rounded-full px-2.5 py-0.5 text-purple-600'>{{ category }}</span>
+                {% endfor %}
+            </div>
+
+            <p class="mt-2 line-clamp-3 text-sm/relaxed text-gray-500">
+                {{ post.text }}
+            </p>
+            </div>
+            
+        </article>
+    {% endfor %}
+    <div class='flex mt-10'>
+    {% include "adverts/parts/paginator.html" %}
+    </div>
+    
+{% else %}
+    <h2>Объявлений нет</h2>
+{% endif %}
+    </div>
+    <div class='bg-gray-200'></div>
+</section>
+{% endblock content%}

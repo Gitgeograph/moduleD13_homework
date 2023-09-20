@@ -1,0 +1,88 @@
+{% extends 'layout/base.html' %}
+{% block title %}
+Profile
+{% endblock title %}
+
+{% block content %}
+<div class='grid grid-cols-3 gap-0 lg:grid-cols-3 lg:gap-0 bg-gray-200'>
+  <div class='bg-gray-200 flex h-screen flex-col border-e'>
+    <div class='px-4 py-6'>
+      <ul class='mt-6 space-y-1'>
+          <li>
+              <a href="{% url 'board:profile' %}" class='block w-5/6 rounded-lg bg-indigo-400 px-3.5 py-2.5 text-center text-md font-normal text-slate-800 shadow-sm hover:bg-indigo-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'>Профиль</a>
+          </li>
+          {% if not is_not_author %}
+          <li>
+            <a href="{% url 'board:responses' %}" class='block w-5/6 rounded-lg bg-indigo-400 px-3.5 py-2.5 text-center text-md font-normal text-slate-800 shadow-sm hover:bg-indigo-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'>Принятые</a>
+            </li>
+            {% endif %}
+          <li>
+              <a href="{% url 'board:messages' %}" class='block w-5/6 rounded-lg bg-indigo-400 px-3.5 py-2.5 text-center text-md font-normal text-slate-800 shadow-sm hover:bg-indigo-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'>Отправленные</a>
+          </li>
+          
+      </ul>
+  </div>
+  </div>  
+  <div class='lg:col-span-2 bg-gray-200'>
+    {% if messages %}
+<table class='w-3/4 divide-y divide-gray-900 overflow-x-auto '>
+    <thead class='bg-gray-800'>
+      <tr>
+        <th scope='col' class='px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider'>
+          Post
+        </th>
+        <th scope='col' class='px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider'>
+          Date
+        </th>
+        <th scope='col' class='px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider'>
+          Name
+        </th>
+        <th scope='col' class='px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider'>
+          Message
+        </th>
+        <th scope='col' class='px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider'>
+          Status
+        </th>
+      </tr>
+    </thead>
+    <tbody class='bg-white divide-y divide-gray-400'>
+    {% for mess in messages %}
+      <tr>
+        <td class='px-6 py-4 whitespace-nowrap'>
+          <div class='text-sm text-black'>{{ mess.commentPost.title }}</div>
+        </td>
+        <td class='px-6 py-4 whitespace-nowrap'>
+            <div class='text-sm text-black'>{{ mess.commentCreated }}</div>
+        </td>
+        <td class='px-6 py-4 whitespace-nowrap'>
+            
+              <div class='text-sm font-medium text-black'>
+                {{ mess.commentUser.username }}
+              </div>
+              <div class='text-sm text-gray-700'>
+                {{ mess.commentUser.email }}
+              </div>
+            
+          
+        </td>
+        <td class='px-6 py-4 whitespace-nowrap'>
+          <div class='text-sm text-black'>{{ mess.commentText }}</div>
+        </td>
+        <td class='px-6 py-4 whitespace-nowrap'>
+          {% if not mess.is_accepted %}
+          <div class='text-sm text-black'>Ожидается</div>
+          {% else %}
+          <div class='text-sm text-black'>Принято</div>
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% else %}
+<h2>Нет сообщений</h2>
+{% endif %}
+  </div>
+  
+</div>
+{% endblock content %}

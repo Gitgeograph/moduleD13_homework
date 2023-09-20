@@ -1,0 +1,18 @@
+{% extends 'layout/base.html' %}
+
+{% block title %}
+{% endblock title %}
+
+{% block content %}
+
+<div class='flex bg-gray-200'>
+
+<form class='mx-auto' method="POST" enctype='multipart/form-data'>
+ {% csrf_token %}
+ 
+ {{ form.as_p }}
+ 
+   <input class="rounded-lg bg-indigo-600 px-3.5 py-2.5 text-center text-md font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" type="submit" value="Add">
+</form>
+</div>
+{% endblock content %}

@@ -1,0 +1,16 @@
+<div class='px-4 py-6'>
+    <ul class='mt-6 space-y-1'>
+        <li>
+            <a href="{% url 'board:profile' %}" class='block w-5/6 rounded-lg bg-indigo-400 px-3.5 py-2.5 text-center text-md font-normal text-slate-800 shadow-sm hover:bg-indigo-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'>Профиль</a>
+        </li>
+        {% if not is_not_author %}
+        <li>
+          <a href="{% url 'board:responses' %}" class='block w-5/6 rounded-lg bg-indigo-400 px-3.5 py-2.5 text-center text-md font-normal text-slate-800 shadow-sm hover:bg-indigo-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'>Принятые</a>
+          </li>
+          {% endif %}
+        <li>
+            <a href="{% url 'board:messages' %}" class='block w-5/6 rounded-lg bg-indigo-400 px-3.5 py-2.5 text-center text-md font-normal text-slate-800 shadow-sm hover:bg-indigo-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'>Отправленные</a>
+        </li>
+        
+    </ul>
+</div>

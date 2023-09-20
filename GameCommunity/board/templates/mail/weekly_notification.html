@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<title></title>
+</head>
+<body>
+    <h2>Hello, {{ user.name.username }}!</h2>
+    <h3>Averts for the week</h3>
+    {% for post in posts_week %}
+    <div class="card">
+        <div class="card-header">
+            <h2><a href="http://127.0.0.1:8000/{% url 'board:AdvertDetail' post.pk %}">{{ post.title }}</a></h2>
+            <p> {{ post.created_at|date:'d F Y, H:i' }} </p>
+        </div>
+        <div class="card-body">
+            <p> {{ post.text|truncatechars:50  }} </p>
+        </div> 
+    </div>
+    <hr>
+    {% endfor %}
+</body>
+</html>

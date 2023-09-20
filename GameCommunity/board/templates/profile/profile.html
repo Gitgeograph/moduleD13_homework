@@ -1,0 +1,34 @@
+{% extends 'layout/base.html' %}
+{% block title %}
+Profile
+{% endblock title %}
+
+{% block content %}
+<div class='grid grid-cols-3 gap-0 lg:grid-cols-3 lg:gap-0 bg-gray-200 '>
+  <div class='bg-gray-200 flex h-screen flex-col border-e'>
+    <div class='px-4 py-6'>
+      <ul class='mt-6 space-y-1'>
+          <li>
+              <a href="{% url 'board:profile' %}" class='block w-5/6 rounded-lg bg-indigo-400 px-3.5 py-2.5 text-center text-md font-normal text-slate-800 shadow-sm hover:bg-indigo-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'>Профиль</a>
+          </li>
+          {% if not is_not_author %}
+          <li>
+            <a href="{% url 'board:responses' %}" class='block w-5/6 rounded-lg bg-indigo-400 px-3.5 py-2.5 text-center text-md font-normal text-slate-800 shadow-sm hover:bg-indigo-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'>Принятые</a>
+            </li>
+            {% endif %}
+          <li>
+              <a href="{% url 'board:messages' %}" class='block w-5/6 rounded-lg bg-indigo-400 px-3.5 py-2.5 text-center text-md font-normal text-slate-800 shadow-sm hover:bg-indigo-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'>Отправленные</a>
+          </li>
+          
+      </ul>
+  </div>
+  </div>  
+  <div class='lg:col-span-2 bg-gray-200 flex'>
+    <h2 class='mx-auto mt-10'>
+        Страница авторизованного пользователя {{request.user.username}}
+    </h2>
+      
+  </div>
+
+</div>
+{% endblock content %}

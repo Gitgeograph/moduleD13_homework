@@ -1,0 +1,91 @@
+{% extends 'layout/base.html' %}
+{% block title %}
+Profile
+{% endblock title %}
+
+{% block content %}
+{% if post_search %}
+<section class="grid grid-cols-3 gap-0 lg:grid-cols-3 lg:gap-0 bg-gray-200">
+  <div class='bg-gray-200 flex h-screen flex-col border-e'>
+    {% include 'inc/nav.html' %}
+    <form method="GET" class='ml-6'>
+      {{ filter.form }}
+      <input class="block w-5/6 rounded-lg bg-indigo-400 px-3.5 py-2.5 text-center text-md font-normal text-slate-800 shadow-sm hover:bg-indigo-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" type="submit" value="Найти">
+   </form>
+  </div>  
+  <div class='lg:col-span-2 bg-gray-200 '>
+  
+    {% if posts %}
+      <table class='mt-4 divide-y divide-gray-900 overflow-x-auto table-fixed'>
+          <thead class='bg-gray-800 '>
+            <tr>
+              <th scope='col' class='px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider'>
+                Post
+              </th>
+              <th scope='col' class='px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider'>
+                Name
+              </th>
+              <th scope='col' class='px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider'>
+                Message
+              </th>
+              <th scope='col' class='px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider'>
+                Date
+              </th>
+              <th scope='col' class='px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider'>
+                Response
+              </th>
+            </tr>
+          </thead>
+          <tbody class='bg-white divide-y divide-gray-400'>
+          {% for post in filter.qs %}
+            {% for comment in post.comments.all %}
+            <tr>
+              <td class='px-6 py-4 whitespace-nowrap'>
+                  <div class='text-sm text-black'>{{ post.title }}</div>
+              </td>
+              <td class='px-6 py-4 whitespace-nowrap'>            
+                    <div class='text-sm font-medium text-black'>
+                      {{ comment.commentUser }}
+                    </div>
+                    <div class='text-sm text-gray-700'>
+                      {{ comment.commentUser.email }}
+                    </div>  
+              </td>
+              <td class='px-6 py-4'>
+                <a href="#"class='text-sm text-black'>{{ comment.commentText|truncatechars:20 }}</a>
+              </td>
+              <td class='px-6 py-4 whitespace-nowrap'>
+                <div class='text-sm text-black'>{{ comment.commentCreated|date:'d.m.y, H:i' }}</div>
+              </td>
+              <td class='px-6 py-4'>
+                {% if comment.is_accepted %}
+                  Принято
+                {% else %}
+                <form action="{% url 'board:accept' comment.id %}" method="post">
+                  {% csrf_token %}
+                      <button  class="px-4 py-2 text-sm font-medium text-purple-500 hover:bg-gray-700 focus:relative">
+                          Принять 
+                      </button>
+                </form> 
+                {% endif %}
+                <form action="{% url 'board:com_delete' comment.id %}" method='post'>
+                  {% csrf_token %}
+                      <button  class="px-4 py-2 text-sm font-medium text-purple-500 hover:bg-gray-700 focus:relative">
+                        Удалить 
+                      </button>
+                </form>
+              </td>
+            </tr>
+            {% endfor %}
+            {% endfor %}
+          </tbody>
+        </table>
+      {% else %}
+      <h2>Нет сообщений</h2>
+      {% endif %}              
+  </div>
+</div>
+</section>
+
+{% endif %}
+{% endblock content %}
